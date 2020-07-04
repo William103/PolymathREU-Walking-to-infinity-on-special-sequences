@@ -40,6 +40,21 @@ class Tree:
 def is_square(x):
     return int(math.sqrt(x)) == math.sqrt(x)
 
+primes = {}
+
+def is_prime(x):
+    try:
+        return primes[x]
+    except KeyError:
+        i = 2
+        while i * i <= x:
+            if x % i == 0:
+                primes[x] = False
+                return False
+            i += 1
+        primes[x] = True
+        return True
+
 def step(x):
     new_xs = []
     str_x = str(x)
@@ -47,16 +62,16 @@ def step(x):
         for d in range(0,10):
             temp = str_x[:i] + str(d) + str_x[i:]
             if not (i == 0 and d == 0):
-                if is_square(int(temp)):
+                if is_prime(int(temp)):
                     new_xs.append(int(temp))
     return new_xs
 
 
 def main():
-    tree = Tree(0, [1,4,9])
+    tree = Tree(0, [2, 3, 5, 7])
     for i in range(20):
+        print(tree.longest_path())
         tree.step()
-    print(tree)
     print(tree.longest_path())
 
 
