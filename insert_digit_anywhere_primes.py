@@ -69,10 +69,11 @@ def step(x):
 
 def main():
     tree = Tree(0, [2, 3, 5, 7])
-    for i in range(20):
+    for i in range(5):
         print(tree.longest_path())
         tree.step()
     print(tree.longest_path())
+    print(tree)
 
 
 if __name__ == '__main__':
