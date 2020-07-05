@@ -18,24 +18,28 @@ impl Tree {
         }
     }
 
-    fn step(&mut self, primes: &mut HashMap<u64, bool>) {
+    fn step(&mut self) {
         if self.children.is_empty() {
-            let str_x = self.value.to_string();
-            for i in 0..str_x.len() + 1 {
-                for d in 0..10 {
-                    let temp = format!("{}{}{}", &str_x[..i], d.to_string(), &str_x[i..]).parse().unwrap();
-                    if !(i == 0 && d == 0) {
-                        if is_prime(temp, primes) {
-                            self.children.push(Tree::new(temp, Vec::new()));
-                        }
-                    }
-                }
+            let xs = step(self.value);
+            for val in xs {
+                self.children.push(Tree::new(val, Vec::new()));
             }
             return;
         }
+        // let handles = Vec::new();
+        // let xs = Vec::new();
         for child in &mut self.children {
-            child.step(primes);
+            child.step();
+
+            // handles.push(std::thread::spawn(|| {
+            //     self.children[i].step();
+            // }));
         }
+        /*
+        for handle in handles {
+            handle.join().unwrap();
+        }
+        */
     }
 
     fn longest_path(&self) -> Vec<u64> {
@@ -55,6 +59,22 @@ impl Tree {
         retval.append(&mut max_path);
         return retval;
     }
+}
+
+fn step(x: u64) -> Vec<u64> {
+    let str_x = x.to_string();
+    let mut new_xs = Vec::new();
+    for i in 0..str_x.len() + 1 {
+        for d in 0..10 {
+            let temp = format!("{}{}{}", &str_x[..i], d.to_string(), &str_x[i..]).parse().unwrap();
+            if !(i == 0 && d == 0) {
+                if primal::is_prime(temp) {
+                    new_xs.push(temp);
+                }
+            }
+        }
+    }
+    return new_xs;
 }
 
 fn is_prime(x: u64, primes: &mut HashMap<u64, bool>) -> bool {
@@ -80,7 +100,7 @@ fn main() {
     let mut tree = Tree::new(0, vec![2, 3, 5, 7]);
     let mut primes: HashMap<u64, bool> = HashMap::new();
     for _ in 0..10 {
-        tree.step(&mut primes);
+        tree.step();
         println!("{:?}", tree.longest_path());
     }
 }
