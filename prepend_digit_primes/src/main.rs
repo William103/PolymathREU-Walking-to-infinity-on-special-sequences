@@ -4,6 +4,8 @@ use std::collections::HashMap;
 struct Tree {
     value: u128,
     children: Vec<Tree>,
+    checked: bool,
+    dead: bool,
 }
 
 impl Tree {
@@ -15,6 +17,8 @@ impl Tree {
         Tree {
             value,
             children: tree_children,
+            checked: false,
+            dead: false,
         }
     }
 
@@ -28,15 +32,28 @@ impl Tree {
     }
 
     fn step(&mut self, primes: &mut HashMap<u128, bool>) {
-        if self.children.is_empty() {
-            let xs = step(self.value, primes);
-            for val in xs {
-                self.children.push(Tree::new(val, Vec::new()));
+        if !self.dead {
+            if self.children.is_empty() && !self.checked {
+                let xs = step(self.value, primes);
+                for val in xs {
+                    self.children.push(Tree::new(val, Vec::new()));
+                }
+                self.checked = true;
+                if self.children.is_empty() {
+                    self.dead = true;
+                }
+                return;
             }
-            return;
-        }
-        for child in &mut self.children {
-            child.step(primes);
+            let mut all_dead = true;
+            for child in &mut self.children {
+                if !child.dead {
+                    all_dead = false;
+                }
+                child.step(primes);
+            }
+            if all_dead {
+                self.dead = true;
+            }
         }
     }
 
@@ -99,7 +116,7 @@ fn main() {
     let mut primes = HashMap::new();
     for i in 0..20 {
         tree.step(&mut primes);
-        println!("{}: {:?}", i, tree.longest_path());
+        println!("{}: {}", i, tree.longest_path().last().unwrap());
     }
     println!("{}", tree.to_string());
 }
