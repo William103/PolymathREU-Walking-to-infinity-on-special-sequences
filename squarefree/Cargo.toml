@@ -1,5 +1,5 @@
 [package]
-name = "non_squarefree"
+name = "squarefree"
 version = "0.1.0"
 authors = ["William Ball <wball1@swarthmore.edu>"]
 edition = "2018"
