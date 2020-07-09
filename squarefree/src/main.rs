@@ -1,12 +1,3 @@
-/* An attempt to see if you can walk to infinity on non-squarefree numbers
- * The answer is a very obvious "yes" I should have seen coming.
- * 4 -> 44 -> 444 -> 4444 -> ...
- * will always be divisible by 4 and thus will always be non-squarefree
- * Similarly
- * 9 -> 99 -> 999 -> 9999 -> ...
- * will always be divisible by 9.
- */
-
 use std::collections::HashMap;
 
 #[derive(Debug)]
@@ -79,7 +70,7 @@ fn step_end(x: u64, square_free: &mut HashMap<u64, bool>) -> Vec<u64> {
     let mut new_xs = Vec::new();
     for d in 0..10 {
         let temp = x * 10 + d;
-        if !is_squarefree(temp, square_free) {
+        if is_squarefree(temp, square_free) {
             new_xs.push(temp);
         }
     }
@@ -104,7 +95,7 @@ fn is_squarefree(n: u64, square_free: &mut HashMap<u64, bool>) -> bool {
 }
 
 fn main() {
-    let mut tree = Tree::new(0, vec![4, 9]);
+    let mut tree = Tree::new(0, vec![1, 2, 3, 5, 6, 7]);
     let mut square_free: HashMap<u64, bool> = HashMap::new();
     for _ in 0..10 {
         tree.step(&mut square_free);
