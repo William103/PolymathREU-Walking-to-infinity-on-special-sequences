@@ -82,7 +82,7 @@ fn is_squarefree(n: u64, square_free: &mut HashMap<u64, bool>) -> bool {
         Some(val) => *val,
         None => {
             let n2 = n as usize;
-            for prime in primal::Primes::all().take(n2) {
+            for prime in primal::Primes::all().take_while(|x| *x * *x <= n2) {
                 if n2 % (prime * prime) == 0 {
                     square_free.insert(n, false);
                     return false;
