@@ -70,10 +70,11 @@ fn step(x: u64) -> Vec<u64> {
 }
 
 fn main() {
-    let mut tree = Tree::new(0, vec![2, 3, 5, 7]);
+    let primes: Vec<u64> = primal::Primes::all().skip_while(|x| *x < 10_000_000).take_while(|x| *x < 100_000_000).map(|x| x as u64).collect();
+    let mut tree = Tree::new(0, primes);
     for _ in 0..20 {
         tree.step();
         println!("{:?}", tree.longest_path());
     }
-    println!("{}", tree.to_string());
+    //println!("{}", tree.to_string());
 }
