@@ -1,5 +1,6 @@
-__pycache__
-*/Cargo.lock
-*/target/*
+python/__pycache__
+rust/*/Cargo.lock
+rust/*/target/*
 cpp/a.out
 java/*.class
+scheme/*.so
