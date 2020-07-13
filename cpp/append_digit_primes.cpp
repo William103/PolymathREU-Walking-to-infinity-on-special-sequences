@@ -53,7 +53,7 @@ public:
 };
 
 auto next(ull x) -> std::vector<ull> {
-    std::vector<ull> new_xs = {};
+    std::vector<ull> new_xs();
     ull temp = x * 10;
     for (int i = 0; i < 10; i++) {
         auto temp2 = temp + i;

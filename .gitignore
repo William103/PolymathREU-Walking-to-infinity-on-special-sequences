@@ -1,3 +1,5 @@
 __pycache__
 */Cargo.lock
 */target/*
+cpp/a.out
+java/*.class
