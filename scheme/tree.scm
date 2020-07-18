@@ -1,5 +1,7 @@
 (load "util.scm")
 
+; If you are messing with any of this, you already know what you are doing
+
 (define (val tree) (car tree))
 (define (children tree) (cdr tree))
 (define (new-tree val children) 
