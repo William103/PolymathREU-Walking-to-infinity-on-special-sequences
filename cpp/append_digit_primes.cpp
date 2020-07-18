@@ -26,10 +26,10 @@ public:
             for (auto val : xs) {
                 children.push_back(Tree(val, {}));
             }
-            return;
-        }
-        for (auto &child : children) {
-            child.step();
+        } else {
+            for (auto &child : children) {
+                child.step();
+            }
         }
     }
 
@@ -53,7 +53,7 @@ public:
 };
 
 auto next(ull x) -> std::vector<ull> {
-    std::vector<ull> new_xs();
+    std::vector<ull> new_xs;
     ull temp = x * 10;
     for (int i = 0; i < 10; i++) {
         auto temp2 = temp + i;
@@ -66,6 +66,10 @@ auto next(ull x) -> std::vector<ull> {
 
 auto is_prime(ull n) -> bool {
     static std::unordered_map<ull, bool> primes;
+    if (n < 2) { 
+        primes[n] = false;
+        return false;
+    }
     if (primes.count(n) > 0) {
         return primes[n];
     }
@@ -89,14 +93,14 @@ auto print_vec(std::vector<T> vec) -> void {
 }
 
 auto main() -> int {
-    std::vector<ull> primes;
-    for (int i = 2; i < 10000000; i++) {
-        if (is_prime(i)) {
-            primes.push_back(i);
-        }
-    }
-    Tree tree(0, primes);
-    for (int i = 0; i < 200; i++) {
+    /* std::vector<ull> primes; */
+    /* for (int i = 2; i < 10000000; i++) { */
+    /*     if (is_prime(i)) { */
+    /*         primes.push_back(i); */
+    /*     } */
+    /* } */
+    Tree tree(0, {});
+    for (int i = 0; i < 9; i++) {
         tree.step();
         print_vec(tree.longest_path());
     }

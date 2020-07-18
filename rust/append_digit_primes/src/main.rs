@@ -71,15 +71,15 @@ fn step(x: u64) -> Vec<u64> {
 
 fn main() {
     /* find all non-truncatable primes in (100,000,000; 1,000,000,000) */
-    let primes: Vec<u64> = primal::Primes::all()
-        .skip_while(|x| *x < 100_000_000)
-        .take_while(|x| *x < 1_000_000_000)
-        .map(|x| x as u64)
-        .filter(|x| !(primal::is_prime(*x / 10)))
-        .collect();
+    // let primes: Vec<u64> = primal::Primes::all()
+    //     .skip_while(|x| *x < 100_000_000)
+    //     .take_while(|x| *x < 1_000_000_000)
+    //     .map(|x| x as u64)
+    //     .filter(|x| !(primal::is_prime(*x / 10)))
+    //     .collect();
 
-    let mut tree = Tree::new(0, primes);
-    for _ in 0..20 {
+    let mut tree = Tree::new(0, Vec::new());
+    for _ in 0..9 {
         tree.step();
         println!("{:?}", tree.longest_path());
     }

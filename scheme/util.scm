@@ -1,3 +1,23 @@
+(define (square? n)
+  (let ((s (sqrt n)))
+    (= s (floor s))))
+
+(define (prime? n)
+  (if (< n 2) #f
+      (let loop ((i 2))
+        (cond
+          ((> (* i i) n) #t)
+          ((zero? (remainder n i)) #f)
+          (else (loop (+ i 1)))))))
+
+(define (square-free? n)
+  (if (< n 1) #f
+      (let loop ((i 2))
+        (cond
+          ((> (* i i) n) #t)
+          ((zero? (remainder n (* i i))) #f)
+          (else (loop (+ i 1)))))))
+
 (define (fold f init seq)
   (if (null? seq)
       init
@@ -18,3 +38,6 @@
     (if (= i n)
         func
         (loop (+ i 1) (compose func f)))))
+
+(define (digits n)
+  (length (string->list (number->string n))))
