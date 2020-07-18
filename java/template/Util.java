@@ -21,6 +21,10 @@ class Util
         if (primes.containsKey(val)) {
             return primes.get(val);
         }
+        if (val < 2) {
+            primes.put(val, false);
+            return false;
+        }
         for (int i = 2; i * i <= val; i++) {
             if (val % i == 0) {
                 primes.put(val, false);
