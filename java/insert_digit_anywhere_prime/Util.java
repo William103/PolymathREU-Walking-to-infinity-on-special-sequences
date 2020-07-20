@@ -1,4 +1,4 @@
-package insert_digit_anywhere;
+package insert_digit_anywhere_prime;
 
 import java.util.HashMap;
 import java.util.Iterator;
