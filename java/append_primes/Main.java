@@ -1,3 +1,5 @@
+package append_primes;
+
 import java.util.ArrayList;
 
 public class Main
@@ -6,8 +8,11 @@ public class Main
     {
         Util.init();
 
-        Tree tree = new Tree(0, new ArrayList<Long>());
-        for (int i = 0; i < 9; i++) {
+        /* By changing the args[0] we can modify which prime we want to be the 
+         * first in the row. Same for the number of iteration.
+         */
+        Tree tree = new Tree(Integer.parseInt(args[0]), new ArrayList<Long>());
+        for (int i = 0; i < Integer.parseInt(args[1]); i++) {
             tree.step();
             Util.printList(tree.longestPath());
         }

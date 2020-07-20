@@ -1,3 +1,5 @@
+package template;
+
 import java.util.ArrayList;
 
 /* Basic tree stuff. I wouldn't recommend tweaking this unless you have some

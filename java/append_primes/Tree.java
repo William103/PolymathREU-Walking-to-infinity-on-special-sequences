@@ -1,3 +1,5 @@
+package append_primes;
+
 import java.util.ArrayList;
 
 class Tree
