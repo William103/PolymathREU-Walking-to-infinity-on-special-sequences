@@ -1,4 +1,8 @@
+package append_primes;
+
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.stream.IntStream;
 import java.util.ArrayList;
 
 class Util
@@ -14,6 +18,8 @@ class Util
 
     public static boolean isPrime(long val)
     {
+        // Add 2 to the HashMap in advance in order to quickly exclude even number later
+        primes.put(2l, true);
         if (primes.containsKey(val)) {
             return primes.get(val);
         }
@@ -21,14 +27,16 @@ class Util
             primes.put(val, false);
             return false;
         }
-        for (int i = 2; i * i <= val; i++) {
-            if (val % i == 0) {
-                primes.put(val, false);
-                return false;
-            }
-        }
-        primes.put(val, true);
-        return true;
+        /* I tried to make this process more readable but I'm not sure about the efficiency 
+         * TODO check the efficiency of this new method
+         */
+        boolean temp = (val % 2) != 0 
+                        && 
+                        IntStream.rangeClosed(3, (int) Math.sqrt(val))
+                        .filter(n -> n % 2 != 0)
+                        .noneMatch(n -> (val % n == 0));
+        primes.put(val, temp);
+        return temp;
     }
 
     public static boolean isSquareFree(long val)
@@ -48,14 +56,14 @@ class Util
         return true;
     }
 
+    // Did some cleaning to this util method
     public static void printList(ArrayList<Long> ls)
     {
-        System.out.print("[");
-        for (int i = 0; i < ls.size() - 1; i++) {
-            System.out.print(ls.get(i));
-            System.out.print(", ");
-        }
-        System.out.print(ls.get(ls.size() - 1));
+        Iterator<Long> it = ls.iterator();
+        System.out.printf("[%s",it.next());
+        do{
+            System.out.printf(", %s", it.next());
+        }while(it.hasNext());
         System.out.print("]\n");
     }
 }

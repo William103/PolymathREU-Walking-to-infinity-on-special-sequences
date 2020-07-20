@@ -1,3 +1,5 @@
+package template;
+
 import java.util.ArrayList;
 
 /* Here is where you can tweak the starting conditions */
@@ -10,7 +12,7 @@ public class Main
         /* here we create a new list with value 0 and no children and check 20
          * iterations, feel free to tweak this to your heart's content
          */
-        Tree tree = new Tree(0, new ArrayList<Long>());
+        Tree tree = new Tree(2, new ArrayList<Long>());
         for (int i = 0; i < 20; i++) {
             tree.step();
             Util.printList(tree.longestPath());
