@@ -2,5 +2,6 @@ python/__pycache__
 rust/*/Cargo.lock
 rust/*/target/*
 cpp/a.out
+cpp/*/*.o
 java/*/*.class
 scheme/*.so
