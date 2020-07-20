@@ -13,8 +13,12 @@ public class Main
          */
         Tree tree = new Tree(Integer.parseInt(args[0]), new ArrayList<Long>());
         for (int i = 0; i < Integer.parseInt(args[1]); i++) {
+            /* Optimied the output */
+            int temp = tree.longestPath().size();
             tree.step();
-            Util.printList(tree.longestPath());
+            if(tree.longestPath().size() != temp){
+                Util.printList(tree.longestPath());
+            }
         }
     }
 }
