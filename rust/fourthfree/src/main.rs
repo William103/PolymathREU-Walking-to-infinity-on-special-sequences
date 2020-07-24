@@ -1,5 +1,6 @@
 use rug::{Assign, Integer};
 use std::thread;
+use std::collections::HashSet;
 
 const NUM_THREADS: usize = 12;
 const BASE: u64 = 10;
@@ -19,15 +20,15 @@ fn is_fourth_free(x: &Integer) -> bool {
 }
 
 fn step(x: &Integer) -> Vec<Integer> {
-    let mut new_xs = Vec::new();
+    let mut new_xs: HashSet<Integer> = HashSet::new();
     for d in 0..BASE {
         let mut temp = Integer::from(x * BASE);
         temp += d;
         if is_fourth_free(&temp) {
-            new_xs.push(temp);
+            new_xs.insert(temp);
         }
     }
-    new_xs
+    new_xs.iter().cloned().collect()
 }
 
 fn next(ls: &Vec<Integer>) -> Vec<Integer> {
