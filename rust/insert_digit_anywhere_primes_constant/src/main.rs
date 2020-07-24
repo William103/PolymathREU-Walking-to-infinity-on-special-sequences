@@ -2,8 +2,8 @@ use std::thread;
 use std::collections::HashSet;
 
 const NUM_THREADS: usize = 6;
-const THREAD_SKIP: u64 = 1_000;
-const BASE: u64 = 16;
+// const THREAD_SKIP: u64 = 1_000;
+const BASE: u64 = 10;
 
 fn remove_duplicates(ls: Vec<u64>) -> Vec<u64> {
     let mut hs: HashSet<u64> = HashSet::new();
@@ -82,11 +82,11 @@ fn next(ls: Vec<u64>) -> (f64, Vec<u64>) {
             let mut new = Vec::new();
             let mut count = 0;
             for oldval in slice {
-                // let mut temp = step(oldval);
-                let temp = step(oldval);
+                let mut temp = step(oldval);
+                // let temp = step(oldval);
                 count += temp.len() as u64;
-                new.push(oldval + THREAD_SKIP);
-                // new.append(&mut temp);
+                // new.push(oldval + THREAD_SKIP);
+                new.append(&mut temp);
             }
             (count, new)
         }));
@@ -100,13 +100,13 @@ fn next(ls: Vec<u64>) -> (f64, Vec<u64>) {
 }
 
 fn main() {
-    let mut ls: Vec<u64> = (1..(NUM_THREADS as u64) * THREAD_SKIP)
-        .into_iter()
-        .collect();
+    // let mut ls: Vec<u64> = (1..(NUM_THREADS as u64) * THREAD_SKIP)
+    //     .into_iter()
+    //     .collect();
     let mut count: f64;
     let mut i = 0;
     let mut total: f64 = 0.0;
-    // let mut ls = primal::Primes::all().take_while(|x| *x < BASE as usize).map(|x| x as u64).collect();
+    let mut ls = primal::Primes::all().take_while(|x| *x < BASE as usize).map(|x| x as u64).collect();
     loop {
         let res = next(ls);
         count = res.0;
