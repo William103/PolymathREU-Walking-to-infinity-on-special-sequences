@@ -1,64 +1,50 @@
-use rug::{Assign, Integer};
 use std::thread;
-use std::collections::HashSet;
 
 const NUM_THREADS: usize = 12;
 const BASE: u64 = 10;
 
-fn is_fourth_free(x: &Integer) -> bool {
-    let mut i = Integer::new();
-    i.assign(2);
-    let mut fourth = Integer::from(&Integer::from(&i * &i) * &Integer::from(&i * &i));
+fn is_fourth_free(x: &u64) -> bool {
+    let mut i = 2;
+    let mut fourth = i * i * i * i;
     while fourth < *x {
-        if x % (fourth) == 0 {
+        if x % fourth == 0 {
             return false;
         }
         i += 1;
-        fourth = Integer::from(&Integer::from(&i * &i) * &Integer::from(&i * &i));
+        fourth = i * i * i * i;
     }
     true
 }
 
-fn step(x: &Integer) -> Vec<Integer> {
-    let mut new_xs: HashSet<Integer> = HashSet::new();
+fn step(x: &u64) -> Vec<u64> {
+    let mut new_xs: Vec<u64> = Vec::new();
     for d in 0..BASE {
-        let mut temp = Integer::from(x * BASE);
-        temp += d;
+        let temp = x * BASE + d;
         if is_fourth_free(&temp) {
-            new_xs.insert(temp);
+            new_xs.push(temp);
         }
     }
-    new_xs.iter().cloned().collect()
+    new_xs
 }
 
-fn next(ls: &Vec<Integer>) -> Vec<Integer> {
-    let mut new: Vec<Integer> = Vec::new();
-    let mut slices: Vec<Vec<Integer>> = Vec::new();
+fn next(ls: Vec<u64>) -> Vec<u64> {
+    let mut new: Vec<u64> = Vec::new();
     let mut children = Vec::with_capacity(NUM_THREADS);
     let size = ls.len() / NUM_THREADS;
-    for i in 0..(NUM_THREADS - 1) {
-        let mut new = Vec::with_capacity(size);
-        for val in ls.iter().skip(size * i).take(size) {
-            new.push(val.clone());
-        }
-        slices.push(new);
-    }
-    {
+    (0..(NUM_THREADS - 1))
+        .map(|i| -> Vec<u64> { (&ls[size * i..size * (i + 1)]).iter().copied().collect() })
+        .for_each(|slice| {
+            children.push(thread::spawn(move || {
+                slice.iter().map(|oldval| step(oldval)).flatten().collect()
+            }))
+        });
+    children.push(thread::spawn(move || -> Vec<u64> {
         let mut new = Vec::new();
-        for val in ls.iter().skip(size * (NUM_THREADS - 1)) {
-            new.push(val.clone());
+        for oldval in &ls[size * (NUM_THREADS - 1)..] {
+            new.append(&mut step(oldval));
         }
-        slices.push(new);
-    }
-    for slice in slices {
-        children.push(thread::spawn(move || -> Vec<Integer> {
-            let mut new = Vec::new();
-            for oldval in slice {
-                new.append(&mut step(&oldval));
-            }
-            new
-        }));
-    }
+        new
+    }));
     for child in children {
         new.append(&mut child.join().unwrap());
     }
@@ -67,14 +53,16 @@ fn next(ls: &Vec<Integer>) -> Vec<Integer> {
 
 fn main() {
     let mut i = 0;
-    let mut ls: Vec<Integer> = (1..BASE)
+    let mut ls: Vec<u64> = (1..BASE)
         .into_iter()
-        .map(|x| Integer::from(x))
         .filter(|x| is_fourth_free(x))
         .collect();
     loop {
         i += 1;
         println!("{}\t{}", i, ls.len());
-        ls = next(&ls);
+        ls = next(ls);
+        if i == 6 {
+            break;
+        }
     }
 }
