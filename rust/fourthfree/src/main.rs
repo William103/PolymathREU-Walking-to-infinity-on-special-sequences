@@ -1,7 +1,7 @@
 use std::thread;
 
 const NUM_THREADS: usize = 12;
-const BASE: u64 = 10;
+const BASE: u64 = 2;
 
 fn is_fourth_free(x: &u64) -> bool {
     let mut i = 2;
@@ -50,13 +50,15 @@ fn next(ls: Vec<u64>) -> Vec<u64> {
 
 fn main() {
     let mut i = 0;
+    let mut val: f64 = 0.0;
     let mut ls: Vec<u64> = (1..BASE)
         .into_iter()
         .filter(|x| is_fourth_free(x))
         .collect();
     loop {
         i += 1;
-        println!("{}\t{}", i, ls.len());
+        val += ls.len() as f64 / 2u64.pow(i) as f64;
         ls = next(ls);
+        println!("{}\t{}\t{}", i, ls.len(), val);
     }
 }
