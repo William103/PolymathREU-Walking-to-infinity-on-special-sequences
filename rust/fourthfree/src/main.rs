@@ -8,7 +8,6 @@ fn is_fourth_free(x: &u64) -> bool {
     let mut fourth = i * i * i * i;
     while fourth <= *x {
         if x % fourth == 0 {
-            println!("{}", x);
             return false;
         }
         i += 1;
