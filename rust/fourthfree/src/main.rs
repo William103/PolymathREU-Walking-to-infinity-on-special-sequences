@@ -17,14 +17,11 @@ fn is_fourth_free(x: &u64) -> bool {
 }
 
 fn step(x: &u64) -> Vec<u64> {
-    let mut new_xs: Vec<u64> = Vec::new();
-    for d in 0..BASE {
-        let temp = x * BASE + d;
-        if is_fourth_free(&temp) {
-            new_xs.push(temp);
-        }
-    }
-    new_xs
+    (0..BASE)
+        .into_iter()
+        .map(|d| x * BASE + d)
+        .filter(|d| is_fourth_free(d))
+        .collect()
 }
 
 fn next(ls: Vec<u64>) -> Vec<u64> {
@@ -61,8 +58,5 @@ fn main() {
         i += 1;
         println!("{}\t{}", i, ls.len());
         ls = next(ls);
-        if i == 6 {
-            break;
-        }
     }
 }
