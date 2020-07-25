@@ -6,8 +6,9 @@ const BASE: u64 = 10;
 fn is_fourth_free(x: &u64) -> bool {
     let mut i = 2;
     let mut fourth = i * i * i * i;
-    while fourth < *x {
+    while fourth <= *x {
         if x % fourth == 0 {
+            println!("{}", x);
             return false;
         }
         i += 1;
