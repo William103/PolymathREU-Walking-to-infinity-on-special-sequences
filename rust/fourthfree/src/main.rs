@@ -1,6 +1,6 @@
-use std::thread;
+// use std::thread;
 
-const NUM_THREADS: usize = 12;
+// const NUM_THREADS: usize = 12;
 const BASE: u64 = 2;
 
 fn is_fourth_free(x: &u64) -> bool {
@@ -25,28 +25,32 @@ fn step(x: &u64) -> Vec<u64> {
 }
 
 fn next(ls: Vec<u64>) -> Vec<u64> {
-    let mut new: Vec<u64> = Vec::new();
-    let mut children = Vec::with_capacity(NUM_THREADS);
-    let size = ls.len() / NUM_THREADS;
-    (0..(NUM_THREADS - 1))
-        .map(|i| -> Vec<u64> { (&ls[size * i..size * (i + 1)]).iter().copied().collect() })
-        .for_each(|slice| {
-            children.push(thread::spawn(move || {
-                slice.iter().map(|oldval| step(oldval)).flatten().collect()
-            }))
-        });
-    children.push(thread::spawn(move || -> Vec<u64> {
-        let mut new = Vec::new();
-        for oldval in &ls[size * (NUM_THREADS - 1)..] {
-            new.append(&mut step(oldval));
-        }
-        new
-    }));
-    for child in children {
-        new.append(&mut child.join().unwrap());
-    }
-    new
+    ls.iter().map(step).flatten().collect()
 }
+
+// fn next(ls: Vec<u64>) -> Vec<u64> {
+//     let mut new: Vec<u64> = Vec::new();
+//     let mut children = Vec::with_capacity(NUM_THREADS);
+//     let size = ls.len() / NUM_THREADS;
+//     (0..(NUM_THREADS - 1))
+//         .map(|i| -> Vec<u64> { (&ls[size * i..size * (i + 1)]).iter().copied().collect() })
+//         .for_each(|slice| {
+//             children.push(thread::spawn(move || {
+//                 slice.iter().map(|oldval| step(oldval)).flatten().collect()
+//             }))
+//         });
+//     children.push(thread::spawn(move || -> Vec<u64> {
+//         let mut new = Vec::new();
+//         for oldval in &ls[size * (NUM_THREADS - 1)..] {
+//             new.append(&mut step(oldval));
+//         }
+//         new
+//     }));
+//     for child in children {
+//         new.append(&mut child.join().unwrap());
+//     }
+//     new
+// }
 
 fn main() {
     let mut i = 0;
