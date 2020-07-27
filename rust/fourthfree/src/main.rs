@@ -1,7 +1,9 @@
+use rayon::prelude::*;
+
 // use std::thread;
 
 // const NUM_THREADS: usize = 12;
-const BASE: u64 = 2;
+const BASE: u64 = 10;
 
 fn is_fourth_free(x: &u64) -> bool {
     let mut i = 2;
@@ -25,7 +27,7 @@ fn step(x: &u64) -> Vec<u64> {
 }
 
 fn next(ls: Vec<u64>) -> Vec<u64> {
-    ls.iter().map(step).flatten().collect()
+    ls.par_iter().map(step).flatten().collect()
 }
 
 // fn next(ls: Vec<u64>) -> Vec<u64> {
@@ -62,7 +64,7 @@ fn main() {
     loop {
         i += 1;
         val += ls.len() as f64 / 2u64.pow(i) as f64;
-        ls = next(ls);
         println!("{}\t{}\t{}", i, ls.len(), val);
+        ls = next(ls);
     }
 }
