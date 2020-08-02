@@ -116,8 +116,7 @@ implicit none
     1   format(1i10)
 
     integer (kind = 16), dimension (:), allocatable :: temp, temp2
-    integer (kind = 16) :: current, next
-    integer :: i, j, templen, ios
+    integer (kind = 16) :: current, next, i, j, templen, ios
     logical :: done
 
     templen = 0
