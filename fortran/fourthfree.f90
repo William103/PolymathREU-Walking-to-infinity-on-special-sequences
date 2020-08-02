@@ -1,27 +1,26 @@
 program test
 implicit none
-    1   format(20i10)
+    1   format(1i10)
 
-    integer (kind = 8), parameter :: base = 2
-    integer (kind = 8), dimension (:), allocatable :: ls, temp1, temp2
+    integer (kind = 8), parameter :: base = 2, chunk = 10
     double precision :: S
-    integer (kind = 8) :: i
+    integer (kind = 8) :: i, len
 
-    allocate(ls(1))
-    ls = (/1/)
-    S = 0
+    open(1, file = "prev.txt")
+    write(1,1) 1
+    close(1)
 
-    do i = 1, 63
-        S = S + (real(size(ls)) / real(2 ** i))
+    S = 0.5
+
+    do i = 2, 63
+        len = next()
+        call rename("array.txt", "prev.txt")
+        S = S + (real(len) / 2.0 ** i)
         print *, "ITERATION", i
-        print *, "NUMBER   ", size(ls)
+        print *, "NUMBER   ", len
         print *, "SUM      ", S
         print *, ""
         call flush()
-        temp1 = next(ls)
-        temp2 = ls
-        ls = temp1
-        deallocate(temp2)
     end do
     
 
@@ -112,32 +111,51 @@ implicit none
 
 end function step
 
-function next (ls)
-    1   format(20i10)
+function next()
+implicit none
+    1   format(1i10)
 
-    integer (kind = 8), dimension (:), allocatable, intent (in) :: ls
-    integer (kind = 8), dimension (:), allocatable :: temp, temp2, next
-    integer :: s, i, j, count
+    integer (kind = 8), dimension (:), allocatable :: temp, temp2
+    integer (kind = 8) :: current, next
+    integer :: i, j, templen, ios
+    logical :: done
 
-    count = 0
-    s = size(ls)
-    allocate(temp(s * base))
+    templen = 0
+    next = 0
+    done = .false.
+    allocate(temp(chunk))
 
-    do i = 1, s
-        temp2 = step(ls(i))
-        do j = 1, size(temp2)
-            temp(j + count) = temp2(j)
+    open(1, file = "array.txt")
+    open(2, file = "prev.txt")
+
+    do while (.not. done)
+        read(2, 1, iostat = ios) current
+        if (ios .ne. 0) then
+            done = .true.
+            exit
+        end if
+
+        temp2 = step(current)
+        do i = 1, size(temp2)
+            templen = templen + 1
+            temp(templen) = temp2(i)
+            next = next + 1
+            if (templen >= chunk) then
+                write(1,1) temp
+                call flush(1)
+                deallocate(temp)
+                allocate(temp(chunk))
+                templen = 0
+            end if
         end do
-        count = count + size(temp2)
         deallocate(temp2)
     end do
 
-    allocate(next(count))
-    do i = 1, count
-        next(i) = temp(i)
-    end do
-
+    write(1,1) temp(:templen)
     deallocate(temp)
+
+    close(1)
+    close(2)
 
 end function next
 
