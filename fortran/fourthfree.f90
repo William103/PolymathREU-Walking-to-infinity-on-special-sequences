@@ -2,7 +2,7 @@ program test
 implicit none
     1   format(1i10)
 
-    integer (kind = 8), parameter :: base = 2, chunk = 10
+    integer (kind = 8), parameter :: base = 2, chunk = 1000000000
     double precision :: S
     integer (kind = 8) :: i, len
 
