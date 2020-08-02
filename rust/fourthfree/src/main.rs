@@ -3,7 +3,7 @@ use rayon::prelude::*;
 // use std::thread;
 
 // const NUM_THREADS: usize = 12;
-const BASE: u64 = 10;
+const BASE: u64 = 2;
 
 fn is_fourth_free(x: &u64) -> bool {
     let mut i = 2;
