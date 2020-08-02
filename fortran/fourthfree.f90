@@ -2,9 +2,9 @@ program test
 implicit none
     1   format(1i10)
 
-    integer (kind = 16), parameter :: base = 2, chunk = 1000000000
+    integer (kind = 8), parameter :: base = 2, chunk = 1000000000
     double precision :: S
-    integer (kind = 16) :: i, len
+    integer (kind = 8) :: i, len
 
     open(1, file = "prev.txt")
     write(1,1) 1
@@ -28,8 +28,8 @@ contains
 
 function is_fourth_free (x)
 
-    integer (kind = 16), intent (in) :: x
-    integer (kind = 16)              :: i
+    integer (kind = 8), intent (in) :: x
+    integer (kind = 8)              :: i
     logical :: is_fourth_free
 
     i = 2
@@ -46,8 +46,8 @@ end function is_fourth_free
 
 function is_square_free (x)
 
-    integer (kind = 16), intent (in) :: x
-    integer (kind = 16)              :: i
+    integer (kind = 8), intent (in) :: x
+    integer (kind = 8)              :: i
     logical :: is_square_free
 
     i = 2
@@ -64,8 +64,8 @@ end function is_square_free
 
 function is_prime (x)
 
-    integer (kind = 16), intent (in) :: x
-    integer (kind = 16)              :: i
+    integer (kind = 8), intent (in) :: x
+    integer (kind = 8)              :: i
     logical :: is_prime
 
     if (x < 2 .or. mod(x, 2) == 0) then
@@ -88,10 +88,10 @@ end function is_prime
 function step (x)
 implicit none
 
-    integer (kind = 16), intent (in)                :: x
-    integer (kind = 16)                             :: i, t, count
-    integer (kind = 16), dimension (:), allocatable :: step
-    integer (kind = 16), dimension (base)           :: temp
+    integer (kind = 8), intent (in)                :: x
+    integer (kind = 8)                             :: i, t, count
+    integer (kind = 8), dimension (:), allocatable :: step
+    integer (kind = 8), dimension (base)           :: temp
 
     count = 0
 
@@ -115,8 +115,8 @@ function next()
 implicit none
     1   format(1i10)
 
-    integer (kind = 16), dimension (:), allocatable :: temp, temp2
-    integer (kind = 16) :: current, next, i, j, templen, ios
+    integer (kind = 8), dimension (:), allocatable :: temp, temp2
+    integer (kind = 8) :: current, next, i, j, templen, ios
     logical :: done
 
     templen = 0
