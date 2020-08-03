@@ -1,6 +1,7 @@
 program test
 implicit none
-    1   format(1i10)
+    1   format(1i20)
+    2   format(1f23.20)
 
     integer (kind = 8), parameter :: base = 2, chunk = 1000000
     double precision :: S
@@ -16,9 +17,12 @@ implicit none
         len = next()
         call rename("array.txt", "prev.txt")
         S = S + (real(len) / 2.0 ** i)
-        print *, "ITERATION", i
-        print *, "NUMBER   ", len
-        print *, "SUM      ", S
+        print *, "ITERATION"
+        write (*,1) i
+        print *, "NUMBER"
+        write (*,1) len
+        print *, "SUM"
+        write (*,2) S
         print *, ""
         call flush()
     end do
