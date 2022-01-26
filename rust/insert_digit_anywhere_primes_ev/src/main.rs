@@ -1,4 +1,4 @@
-use is_prime::is_prime_with_witnesses;
+use is_prime::is_prime;
 use rand::prelude::*;
 use std::io::prelude::*;
 
@@ -14,7 +14,7 @@ fn step(x: String, rng: &mut ThreadRng) -> Option<String> {
         let mut copy = x.clone();
         copy.insert(i, (d + '0' as u8) as char);
         if copy.as_bytes()[0] != '0' as u8 {
-            if is_prime_with_witnesses(&copy, 40) {
+            if is_prime(&copy) {
                 return Some(copy);
             }
         }
